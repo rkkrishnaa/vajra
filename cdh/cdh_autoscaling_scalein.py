@@ -43,12 +43,9 @@ print "vm is in " + state
 if state == 'Terminating:Wait':
 	print "host decommision started"
  	##decommission host
-	service_url = scm_protocol + '://' +  scm_host + ':'  +  scm_port + '/api/' + scm_api + '/cm/commands/hostsDecommission'
-	
+	service_url = scm_protocol + '://' +  scm_host + ':'  +  scm_port + '/api/' + scm_api + '/cm/commands/hostsDecommission'	
 	#service_url = scm_protocol + '://' +  scm_host + ':'  +  scm_port + '/api/' + scm_api + '/cm/hostsRecommission'
 	#service_url = scm_protocol + '://' +  scm_host + ':'  +  scm_port + '/api/' + scm_api + '/cm/commands/hostsStartRoles'
-
-
 	print service_url
 	headers = {'content-type': 'application/json'}
 	req_body = { "items":[ host_id ]}
