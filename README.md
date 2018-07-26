@@ -43,6 +43,14 @@ How Vajra works?
 * While scaling edge node, we push the system memory to cloudwatch for autoscaling.
 * Worker nodes are resilent to termination of nodes, so we can add it to autoscaling group of spot instances which leverages the lifecycle hook of autoscaling.
 
+About ELB custom health checker:
+--------------------------------
+* AWS application load balancer performs health check based on the configured traffic port to check the availability of the service. It will be marked as a healthy state when the health check is passed.
+* Application load balanver will route the traffic only to the healthy instances. Sometimes we might have a scenario where the application is running but the system resource become a bottle neck when multiple users accessing the application but elb routes the traffic to the instance.
+* One more scenario, Application load balancer will randonly route the traffic when there is no healthy instance in the target group.
+* This example will illustrate the above scenarios. We have an application running on ec2 where all users running spark shell, so the memory will be consumed rapidly. At one point the system resources will be exhausted. Any new users will get this host will get performance issue.
+* Custom health checker will address the issue. It is written in python(Flask Web Framework) which exposes REST api to get metrics of health status of hue, web server, jupyterhub, etc. Here system memory, disk availability and service stauts will be compared. If the above three is Ok, service will return 200 HTTP response code otherwise 500 response code will be returned. Finally, It will address the problem. 
+
 Future Work:
 ------------
 * It is bit difficult to use spot fleet for edge nodes, Since edge node is the point of contact of end users to run hadoop jobs. Spot instances does not provide gaurentee for running instances. So end users will be impacted if they run a long running spark jobs and application load balancer takes more time to drain the connection. To address the above case, I am creating a lambda function which emulates edge node. It can be accessed thru a light weight web client integrated with api gateway. So that we do not need to run a dedicated edge node to access linux terminal. 
