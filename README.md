@@ -1,5 +1,5 @@
-Vajra - Scale your hadoop cluster based on top of aws infrastructure in less than 5minutes
-------------------------------------------------------------------------------------------
+Vajra - Scale your workernodes and edgenodes of hadoop cluster on top of aws infrastructure in less than 5minutes
+-----------------------------------------------------------------------------------------------------------------
 
 ![vajra](vajra-hadoop.png?raw=true)
 
