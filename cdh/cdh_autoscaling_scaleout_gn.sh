@@ -1,13 +1,13 @@
 #!/bin/bash
 rm -rf /opt/cdh_autoscaling
 rm -rf /var/spool/cron/root
-git clone https://username:password@bitbucket.org/accountname/repo.git /opt/cdh_autoscaling
+git clone https://github.com/rkkrishnaa/vajra.git /opt/cdh_autoscaling
 chmod +x /opt/cdh_autoscaling
 /bin/touch /var/spool/cron/root
 
-(crontab -l && echo "*/10 * * * * /bin/python /opt/cdh_autoscaling/cdh_autoscaling_scalein.py") | crontab -
-(crontab -l && echo "*/1 * * * * /bin/python /opt/cdh_autoscaling/check_memory.py") | crontab -
-(crontab -l && echo "*/5 * * * * /bin/bash /opt/cdh_autoscaling/kill_jupyterhub_process.sh") | crontab -
+(crontab -l && echo "*/10 * * * * /bin/python /opt/cdh_autoscaling/cdh/cdh_autoscaling_scalein.py") | crontab -
+(crontab -l && echo "*/1 * * * * /bin/python /opt/cdh_autoscaling/cdh/check_memory.py") | crontab -
+(crontab -l && echo "*/5 * * * * /bin/bash /opt/cdh_autoscaling/cdh/kill_jupyterhub_process.sh") | crontab -
 (crontab -l && echo "0 * * * * sync; echo 1 > /proc/sys/vm/drop_caches") | crontab -
 
 /etc/init.d/cloudera-scm-agent stop
@@ -36,7 +36,7 @@ curl -X POST \
 	-d '{"items": [{"hostId" : "'$HOSTNAME'"}]}' \
 	$scm_protocol://$scm_host:$scm_port/api/$scm_api/clusters/$cluster_name/hosts
 
-sleep 600
+sleep 60
 #apply host template
 curl -X POST \
 	-u "$scm_admin_user:$scm_admin_pass" \
